@@ -10,3 +10,6 @@ PATTTEN=$1
 
  
 grep --color=auto -rwnI --exclude='tags' --exclude='cscope.out' --exclude='.depend' --exclude='*.html' --exclude-dir='*.svn' "${PATTTEN}" .
+
+usage:
+$ gg [word]
