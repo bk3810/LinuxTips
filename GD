@@ -1,0 +1,13 @@
+#!/bin/sh
+
+BEFORE=$1
+
+if [ -z "${BEFORE}" ]
+then
+ echo Type the word to remove line
+ exit 0
+fi
+
+
+grep -rlI --exclude='tags' --exclude='cscope.out' --exclude='.depend' --exclude='*.html' --exclude-dir='*.svn' "${BEFORE}" . | xargs sed -i "/${BEFORE}/d"
+
