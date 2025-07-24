@@ -1,0 +1,12 @@
+#!/bin/sh
+# word 단위로 일치 grep
+
+if [ -z "$1" ]; then
+ echo input words
+ exit 0
+fi
+
+PATTTEN=$1
+
+ 
+grep --color=auto -rwnI --exclude='tags' --exclude='cscope.out' --exclude='.depend' --exclude='*.html' --exclude-dir='*.git' --exclude-dir='*.svn' "${PATTTEN}" .
