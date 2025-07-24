@@ -1,15 +1,27 @@
+#!/bin/sh
+
 # grep for my project
 # Put this file on ~/bin/ and add ~/bin/ to PATH
 
 if [ -z '$1' ]; then
- echo input words
+ echo input words for grep
  exit 0
 fi
 
 PATTTEN=$1
 
  
-grep --color=auto -rwnI --exclude='tags' --exclude='cscope.out' --exclude='.depend' --exclude='*.html' --exclude-dir='*.svn' "${PATTTEN}" .
+OPTS="--color=auto -rnI --exclude='tags' --exclude='cscope.out' --exclude='.depend' --exclude='*.html' --exclude-dir='.git' --exclude-dir='*.svn' "
+ 
+if [ -z "$2" ]
+then
 
-usage:
-$ gg [word]
+#grep $OPTS "$PATTTEN" .
+grep --color=auto -rnI --exclude='tags' --exclude='ctags.out' --exclude='cscope.out' --exclude='.depend' --exclude='*.html' --exclude-dir='.git' --exclude-dir='*.svn' "${PATTTEN}" . 
+
+else
+
+PATTERN2=$2
+grep -rnI --exclude='tags' --exclude='ctags.out' --exclude='cscope.out' --exclude='.depend' --exclude='*.html' --exclude-dir='.git' --exclude-dir='*.svn' "${PATTTEN}" . | grep --color=auto "${PATTERN2}"
+
+fi
