@@ -1,0 +1,35 @@
+#!/bin/bash
+# 개발 중인 device에 ssh 접속하기. ipv4 끝자리만 입렵
+# 예 ./conn_device 200 => (192.168.1.200)
+
+# SSH 정보
+USER="username"       # 아이디
+PASSWORD="password"   # 비밀번호
+HOST="$1"             # device 주소 (IP 또는 도메인)
+PORT=27822            # device ssh port number
+COMMAND="cat /aux2/festival"             # 실행할 명령어
+#COMMAND="${2:-}"             # 실행할 명령어=> 터미널 끊어짐?
+
+# 로그인 후 실행할 명령어. 여기선 su로 root 전환
+REMOTE_CMD='ROOTPASS=$(cat /root/tmp_pass); cat "$ROOTPASS" ; su -'
+
+# SSH 연결 및 명령 실행, 자동으로 root 전환 시도를 여러가지 방법으로 하였지만, 결국 안됨.
+# ssh 연결이 종료되고 로컬의 명령으로 실행되는 경우도 있으니, 조심.
+#sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no -p "$PORT" "$USER@$HOST" "$COMMAND"
+sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no -p "$PORT" "$USER@192.168.1.$HOST" "$REMOITE_CMD"
+#sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no -p "$PORT" "$USER@192.168.11.$HOST" "bash -c '$COMMAND; exec bash'"
+#sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no -p "$PORT" "$USER@192.168.11.$HOST" "sh -c '$COMMAND; exec sh -i'"
+#sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no -p "$PORT" "$USER@192.168.11.$HOST" 'bash -s' << 'EOF'
+
+# 원격 root 비밀번호 파일 경로, 원격에서 rebooot 테스트할때 사용함. 80 간격으로 리부팅.
+#REMOTE_CMD='ROOTPASS=$(cat /root/tmp_pass); echo "$ROOTPASS" | su -c "reboot" - '
+
+#sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no -p "$PORT" "$USER@192.168.1.$HOST" "$REMOTE_CMD"
+#sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no -p "$PORT" "$USER@192.168.1.$HOST"
+
+#ROOTPASS=$(cat /aux2/festival)
+#echo "$ROOTPASS" | sudo -S su
+
+#sudo -i <<EOF2
+#reboot
+#EOF2
